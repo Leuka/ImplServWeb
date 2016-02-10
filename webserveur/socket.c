@@ -34,3 +34,22 @@ int creer_serveur(int port){
  
  return socket_serveur;
 }
+
+int accepte_client(int sock){
+	int socket_client ;
+    
+	const char * message_bienvenue = "*** Salut les  lapins ! *** \nBienvenue sur le serveur vachement interessant de la region Est qui remue les synapses et reveille les zygomatiques en hibernation. \nAnticyclone garanti.\n"  ;
+
+
+	socket_client = accept(sock, NULL,NULL);
+    if(socket_client == -1){
+       perror("accept");
+       printf("accept");
+       return -1;
+	}
+
+	write(socket_client, message_bienvenue, strlen(message_bienvenue));
+    sleep(1);
+	
+	return socket_client;
+}

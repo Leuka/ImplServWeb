@@ -10,26 +10,29 @@
 
 int main(void){
 
-  int socket_serveur=creer_serveur(8080);
+  	int socket_serveur=creer_serveur(8080);
+	int socket_client ;
+	char buffer[1024] ="";
 
-  while(1){
-     int socket_client ;
-     socket_client = accept(socket_serveur, NULL,NULL);
-     if(socket_client == -1){
-       perror("accept");
-       printf("accept");
-       return -1;
-     }
- const char *message_bienvenue = "*** Salut les  lapins ! *** \nBienvenue sur le serveur vachement interessant de la region Est qui remue les synapses et reveille les zygomatiques en hibernation. \nAnticyclone garanti.\n"  ;
- char* buffer = char[1024] ;
- int i;
- for(i = 0;i<10;i++){
-
-   int nb = read(socket_client, buffer, sizeof(char)*1024);
-   while((buffer =readd)
- write(socket_client, message_bienvenue, strlen(message_bienvenue));
- sleep(1);
- }
-  }
-  return 0;
+	while(1){
+		socket_client= accepte_client(socket_serveur);
+		int i = read(socket_client, buffer, sizeof(char)*1024);
+		
+		
+		while(strcmp("fin\n",buffer)!=0){	
+			if( write(socket_client,buffer,i)==-1){
+				perror("write");
+			}
+			if((i=read(socket_client,buffer,sizeof(char)*1024))==-1){
+	  			perror("read");
+			}
+			
+			
+		}
+close(socket_client);
+		
+	}
+		
+	
+	return 0;
 }
