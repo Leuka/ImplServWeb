@@ -22,6 +22,10 @@ int creer_serveur(int port){
   saddr.sin_port = htons(port) ;
   saddr.sin_addr.s_addr = INADDR_ANY ;
 
+int optval = 1;
+if ( setsockopt ( socket_serveur , SOL_SOCKET , SO_REUSEADDR , & optval , sizeof ( int ))== -1)
+perror ( " Can not set SO_REUSEADDR option " );
+
  if ( bind ( socket_serveur , ( struct sockaddr *)& saddr , sizeof ( saddr )) == -1){
    perror("bind socker_serveur");
    return -1;
