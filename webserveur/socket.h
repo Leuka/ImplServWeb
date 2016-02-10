@@ -9,4 +9,5 @@ socket créée . */
 
 int creer_serveur(int port);
 int accepte_client(int sock);
+void initialiser_signaux ( void );
 #endif

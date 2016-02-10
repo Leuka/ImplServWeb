@@ -15,7 +15,10 @@ int main(void){
 	char buffer[1024] ="";
 
 	while(1){
+		
 		socket_client= accepte_client(socket_serveur);
+		
+		if(fork()!=0){
 		int i = read(socket_client, buffer, sizeof(char)*1024);
 		
 		
@@ -26,7 +29,7 @@ int main(void){
 			if((i=read(socket_client,buffer,sizeof(char)*1024))==-1){
 	  			perror("read");
 			}
-			
+		}
 			
 		}
 close(socket_client);

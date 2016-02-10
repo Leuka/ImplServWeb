@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -15,7 +16,7 @@ int creer_serveur(int port){
     perror("socket_serveur");
   return -1;
   }
-
+	initialiser_signaux();
  
   struct sockaddr_in saddr;
   saddr.sin_family = AF_INET;
@@ -26,18 +27,20 @@ int optval = 1;
 if ( setsockopt ( socket_serveur , SOL_SOCKET , SO_REUSEADDR , & optval , sizeof ( int ))== -1)
 perror ( " Can not set SO_REUSEADDR option " );
 
- if ( bind ( socket_serveur , ( struct sockaddr *)& saddr , sizeof ( saddr )) == -1){
+ if ( bind ( socket_serveur,( struct sockaddr *)& saddr , sizeof( saddr))== -1){
    perror("bind socker_serveur");
    return -1;
  }
 
- if(listen(socket_serveur , 10) == -1){
-   perror("listen socket_serveur");
+ if( listen( socket_serveur, 10)== -1){
+   perror( "listen socket_serveur");
    return -1;
  }
  
  return socket_serveur;
 }
+
+
 
 int accepte_client(int sock){
 	int socket_client ;
@@ -46,9 +49,10 @@ int accepte_client(int sock){
 
 
 	socket_client = accept(sock, NULL,NULL);
-    if(socket_client == -1){
-       perror("accept");
-       printf("accept");
+    if(socket_client == -1)
+	{
+       perror( "accept");
+       printf( "accept");
        return -1;
 	}
 
@@ -57,3 +61,19 @@ int accepte_client(int sock){
 	
 	return socket_client;
 }
+
+
+
+void initialiser_signaux ( void ){
+
+	if ( signal( SIGPIPE, SIG_IGN )== SIG_ERR)
+	{
+		perror( " signal " );
+	}
+	
+}
+
+
+
+
+
