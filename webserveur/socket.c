@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include "socket.h"
+#include <sys/wait.h>
 
 int creer_serveur(int port){
   
@@ -65,12 +66,28 @@ int accepte_client(int sock){
 
 
 void initialiser_signaux ( void ){
-
+	struct sigaction sa;
+	  
+	  sa.sa_handler = traitement_signal;
+	  sigemptyset(&sa.sa_mask);
+	  sa.sa_flags = SA_RESTART;
+	  if (sigaction(SIGCHLD,&sa,NULL) == -1){
+		  perror ("sigaction(SIGCHLD)");
+		}
 	if ( signal( SIGPIPE, SIG_IGN )== SIG_ERR)
 	{
 		perror( " signal " );
 	}
 	
+}
+
+void traitement_signal(int sig)
+{
+  printf("Signal %d recu\n", sig);
+  wait(&sig);
+  if(WIFSIGNALED(sig)){
+    printf("%s\n", WTERMSIG(sig));
+  }
 }
 
 
