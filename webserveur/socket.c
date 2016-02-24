@@ -56,7 +56,7 @@ int accepte_client(int sock){
        printf( "accept");
        return -1;
 	}
-
+	
 	write(socket_client, message_bienvenue, strlen(message_bienvenue));
     sleep(1);
 	
@@ -66,28 +66,25 @@ int accepte_client(int sock){
 
 
 void initialiser_signaux ( void ){
-	struct sigaction sa;
-	  
-	  sa.sa_handler = traitement_signal;
-	  sigemptyset(&sa.sa_mask);
-	  sa.sa_flags = SA_RESTART;
-	  if (sigaction(SIGCHLD,&sa,NULL) == -1){
-		  perror ("sigaction(SIGCHLD)");
-		}
-	if ( signal( SIGPIPE, SIG_IGN )== SIG_ERR)
-	{
-		perror( " signal " );
-	}
-	
+  if(signal(SIGPIPE, SIG_IGN) == SIG_ERR){
+    perror("signal");
+  }
+  
+  struct sigaction sa;
+  
+  sa.sa_handler = traitement_signal;
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = SA_RESTART;
+  if (sigaction(SIGCHLD,&sa,NULL) == -1)
+    {
+      perror ("sigaction(SIGCHLD)");
+    }
 }
 
 void traitement_signal(int sig)
 {
-  printf("Signal %d recu\n", sig);
-  wait(&sig);
-  if(WIFSIGNALED(sig)){
-    printf("%s\n", WTERMSIG(sig));
-  }
+  printf ("Signal %d reçu \n" , sig);
+	waitpid(-1, NULL, WNOHANG);
 }
 
 

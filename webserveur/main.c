@@ -10,7 +10,7 @@
 
 int main(void){
 
-  	int socket_serveur=creer_serveur(8080);
+  	int socket_serveur=creer_serveur(8080);	
 	int socket_client ;
 	char buffer[1024] ="";
 
@@ -33,6 +33,7 @@ int main(void){
 			
 		}
 close(socket_client);
+	exit(0);
 		
 	}
 		
