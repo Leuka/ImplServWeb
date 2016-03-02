@@ -46,10 +46,13 @@ perror ( " Can not set SO_REUSEADDR option " );
 int accepte_client(int sock){
 	int socket_client ;
     
-	const char * message_bienvenue = "*** Salut les  lapins ! *** \nBienvenue sur le serveur vachement interessant de la region Est qui remue les synapses et reveille les zygomatiques en hibernation. \nAnticyclone garanti.\n"  ;
+	const char * message_bienvenue = "*** Salut les  lapins ! *** \nBienvenue sur le serveur vachement interessant de la region Est qui remue les synapses et reveille les zygomatiques en hibernation. \nAnticyclone garanti.\n\n"  ;
 
 
 	socket_client = accept(sock, NULL,NULL);
+
+	
+
     if(socket_client == -1)
 	{
        perror( "accept");
@@ -57,8 +60,12 @@ int accepte_client(int sock){
        return -1;
 	}
 	
-	write(socket_client, message_bienvenue, strlen(message_bienvenue));
     sleep(1);
+
+	FILE * fd=fdopen(socket_client,"w+");
+	fprintf(fd, "%s%s", "Pop hip", message_bienvenue);
+
+	fflush(fd);
 	
 	return socket_client;
 }
@@ -66,9 +73,7 @@ int accepte_client(int sock){
 
 
 void initialiser_signaux ( void ){
-  if(signal(SIGPIPE, SIG_IGN) == SIG_ERR){
-    perror("signal");
-  }
+  
   
   struct sigaction sa;
   
@@ -79,6 +84,10 @@ void initialiser_signaux ( void ){
     {
       perror ("sigaction(SIGCHLD)");
     }
+
+	if(signal(SIGPIPE, SIG_IGN) == SIG_ERR){
+    	perror("signal");
+  }
 }
 
 void traitement_signal(int sig)
