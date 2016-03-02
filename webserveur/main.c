@@ -15,33 +15,29 @@ int main(void){
   char buffer[1024] ="";
 
   while(1){
-		
     socket_client= accepte_client(socket_serveur);
-		
-    if(fork()!=0){
+    if(fork()==0){
       FILE * fd=fdopen(socket_client,"w+");
-      
       while(strcmp("fin\n",buffer)!=0){	
-
 	if( fgets(buffer, sizeof(buffer), fd) == NULL){
-	  break;
+	  return -1;
 	}
 	if((fprintf(fd, "<Pop Hip> %s", buffer)==-1)){
 	  perror("read");
 	  
 	}
-
+	
       }
-
-    }
       close(socket_client);
       exit(0);
-  }		
-	
+    }
+    close(socket_client);
     
-	
-    return 0;
   }
+
+    
+  return 0;
+}
 
 
 

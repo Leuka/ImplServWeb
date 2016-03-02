@@ -60,13 +60,13 @@ int accepte_client(int sock){
        return -1;
 	}
 	
-    sleep(1);
-
+   
+	
 	FILE * fd=fdopen(socket_client,"w+");
 	fprintf(fd, "%s%s", "Pop hip", message_bienvenue);
 
 	fflush(fd);
-	
+	sleep(1);
 	return socket_client;
 }
 
