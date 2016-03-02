@@ -46,7 +46,7 @@ perror ( " Can not set SO_REUSEADDR option " );
 int accepte_client(int sock){
 	int socket_client ;
     
-	const char * message_bienvenue = "*** Salut les  lapins ! *** \nBienvenue sur le serveur vachement interessant de la region Est qui remue les synapses et reveille les zygomatiques en hibernation. \nAnticyclone garanti.\n\n"  ;
+	//const char * message_bienvenue = "*** Salut les  lapins ! *** \nBienvenue sur le serveur vachement interessant de la region Est qui remue les synapses et reveille les zygomatiques en hibernation. \nAnticyclone garanti.\n\n"  ;
 
 
 	socket_client = accept(sock, NULL,NULL);
@@ -63,7 +63,7 @@ int accepte_client(int sock){
    
 	
 	FILE * fd=fdopen(socket_client,"w+");
-	fprintf(fd, "%s%s", "Pop hip", message_bienvenue);
+	//fprintf(fd, "%s%s", "Pop hip", message_bienvenue);
 
 	fflush(fd);
 	sleep(1);

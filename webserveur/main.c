@@ -22,7 +22,7 @@ int main(void){
 	if( fgets(buffer, sizeof(buffer), fd) == NULL){
 	  return -1;
 	}
-	if((fprintf(fd, "<Pop Hip> %s", buffer)==-1)){
+	if((printf( "%s", buffer)==-1)){
 	  perror("read");
 	  
 	}
