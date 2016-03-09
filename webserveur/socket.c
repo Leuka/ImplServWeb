@@ -97,6 +97,16 @@ void traitement_signal(int sig)
 	waitpid(-1, NULL, WNOHANG);
 }
 
+char * fgets_or_exit(char *buffer,int size,FILE *stream)
+{
+   char *buff;
+   if ((buff = fgets(buffer, size, stream)) == NULL)
+   {
+      exit(1);
+   }
+   return buff;
+}
+
 
 
 

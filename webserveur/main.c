@@ -24,7 +24,8 @@ int main(void){
   while( (socket_client= accepte_client(socket_serveur))!= -1 ){
     if(fork()==0){
       FILE * fd=fdopen(socket_client,"w+");
-      fgets(buffer, sizeof(buffer),fd);
+
+      buffer = fgets_or_exit(buffer,sizeof(buffer), fd);
 	
       methode = strtok(buffer, " ");
       url = strtok(NULL, " ");
