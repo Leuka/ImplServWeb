@@ -55,6 +55,7 @@ int accepte_client(int sock){
 
     if(socket_client == -1)
 	{
+
        perror( "accept");
        printf( "accept");
        return -1;

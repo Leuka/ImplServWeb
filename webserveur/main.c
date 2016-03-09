@@ -13,8 +13,7 @@ int main(void){
   int socket_serveur=creer_serveur(8080);	
   int socket_client ;
   char buffer[1024] ="";
-  const char *msg400 = "HTTP/1.1 400 Bad Request\r\nConnection: close\r\nContent-Length: 17\r\n\r\n400 Bad Request\r\n";
-  const char *msg200 = "HTTP/1.1 200 OK\r\nContent-Length: length\r\n";
+  const char *msg404 = "HTTP/1.1 404 Crou not found\r\nConnection: close\r\n";
   char *methode;
   char *ressources;
   char *url;	
@@ -26,7 +25,7 @@ int main(void){
     if(fork()==0){
       FILE * fd=fdopen(socket_client,"w+");
       fgets(buffer, sizeof(buffer),fd);
-
+	
       methode = strtok(buffer, " ");
       url = strtok(NULL, " ");
       ressources = strtok(NULL, " ");
@@ -34,20 +33,19 @@ int main(void){
       
       printf("%s\n",methode );
       printf("%s\n",ressources );
-      fprintf(fd, "%s\n", message_bienvenue );
-
 
       if ((strcmp(methode,"GET")==0) && (ressources != NULL)&& (spl == NULL)  && ((strstr(ressources,"HTTP/1.0")==0) || (strstr(ressources,"HTTP/1.1")==0)) && (strcmp(url,"/")==0)){
 	fprintf(fd, "%s\n", message_bienvenue );
-	fprintf(fd, "%s\n", msg200 );
 	fflush(fd);
 	fclose(fd);
       }
       else {
-	fprintf(fd,"%s\n",msg400);
+	fprintf(fd,"%s\n",msg404);
 	fflush(fd);
 	fclose(fd);
       }
+
+
       /*
 	while(strcmp("fin\n",buffer)!=0){	
 	if( fgets(buffer, sizeof(buffer), fd) == NULL){
