@@ -17,7 +17,7 @@ int main(void){
   const char *msg200 = "HTTP/1.1 200 OK\r\nContent-Length: length\r\n";
   char *methode;
   char *ressources;
-  /*char *url;*/	
+  char *url;	
   char *spl;
 
   const char * message_bienvenue = "*** Salut les  lapins ! *** \nBienvenue sur le serveur vachement interessant de la region Est qui remue les synapses et reveille les zygomatiques en hibernation. \nAnticyclone garanti.\n\n"  ;
@@ -28,46 +28,42 @@ int main(void){
       fgets(buffer, sizeof(buffer),fd);
 
       methode = strtok(buffer, " ");
-      /*url = */strtok(NULL, " ");
+      url = strtok(NULL, " ");
       ressources = strtok(NULL, " ");
       spl = strtok(NULL, " ");
       
-	printf("%s\n",methode );
-printf("%s\n",ressources );
-fprintf(fd, "%s\n", message_bienvenue );
+      printf("%s\n",methode );
+      printf("%s\n",ressources );
+      fprintf(fd, "%s\n", message_bienvenue );
 
 
-    if ((strcmp(methode,"GET")==0) && (ressources != NULL)&& (spl == NULL) ){
-		if (((strstr(ressources,"HTTP/1.0")==0) || (strstr(ressources,"HTTP/1.1")==0))){
-	//if (strcmp(url,"/")==0){
-		  fprintf(fd, "%s\n", message_bienvenue );
-		  fprintf(fd, "%s\n", msg200 );
-		  fflush(fd);
-		  fclose(fd);
-	//}
-		}
-		else {
-		  fprintf(fd,"%s\n",msg400);
-		  fflush(fd);
-		  fclose(fd);
-		}
+      if ((strcmp(methode,"GET")==0) && (ressources != NULL)&& (spl == NULL)  && ((strstr(ressources,"HTTP/1.0")==0) || (strstr(ressources,"HTTP/1.1")==0)) && (strcmp(url,"/")==0)){
+	fprintf(fd, "%s\n", message_bienvenue );
+	fprintf(fd, "%s\n", msg200 );
+	fflush(fd);
+	fclose(fd);
+      }
+      else {
+	fprintf(fd,"%s\n",msg400);
+	fflush(fd);
+	fclose(fd);
+      }
+      /*
+	while(strcmp("fin\n",buffer)!=0){	
+	if( fgets(buffer, sizeof(buffer), fd) == NULL){
+	return -1;
+	}
+	if((printf( "%s", buffer)==-1)){
+	perror("read");
+	}
+	}*/
+      close(socket_client);
+      exit(0);
     }
-    /*
-      while(strcmp("fin\n",buffer)!=0){	
-      if( fgets(buffer, sizeof(buffer), fd) == NULL){
-      return -1;
-      }
-      if((printf( "%s", buffer)==-1)){
-      perror("read");
-      }
-      }*/
-    close(socket_client);
-    exit(0);
-  }
     
-  close(socket_client);
-} 
-return 0;
+    close(socket_client);
+  } 
+  return 0;
 }
 
 
